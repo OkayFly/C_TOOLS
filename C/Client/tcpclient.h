@@ -15,6 +15,7 @@
 
 #include <netinet/in.h>
 #include <functional>
+#include <thread>
 #include "tcpstream.h"
 
 
@@ -25,6 +26,10 @@ class TCPClient
 
     public:
 
+        enum{
+            TCPCLIENT_RECV_BUF_LEN = 1024,
+        };
+
         typedef std::function<void (const char*data, int len)> ClientReadCallback;
         typedef std::function<void ()> ClientConnectCallback;
         typedef std::function<void()> ClientDisconnectCallback;
@@ -32,7 +37,8 @@ class TCPClient
         TCPClient(string _ip, int _port, ClientReadCallback _readcallback, ClientConnectCallback _connectcallback, ClientDisconnectCallback _disconnectcallback);
         ~TCPClient();
 
-        TCPStream* connect();
+        void connect();
+        void join();
 
     private:
         string ip;
@@ -42,7 +48,14 @@ class TCPClient
         ClientConnectCallback connectcallback;
         ClientDisconnectCallback disconnectcallback;
 
+        void threadProcess();    
+        int resolveHostName(const char* hostname, struct in_addr* addr);
 
+        thread*  t;
+        TCPStream* stream;
+        bool reconnect;
+        
+        bool quit;
 
 };
 

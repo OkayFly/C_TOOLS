@@ -33,13 +33,9 @@ int main(int argc, char** argv)
 
 
     TCPClient* tcp_client = new TCPClient("127.0.0.1", 21, onRead, onConnect, onDisconnect);
+    tcp_client->connect();
 
-
-    while(1)
-    {
-        
-
-    }
+    tcp_client->join();
 
     return 0;
 }
