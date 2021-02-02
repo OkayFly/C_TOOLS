@@ -1,0 +1,81 @@
+/*
+ * RockChip. DisplayPort screen LP097QX1
+ *
+ */
+
+/ {
+
+
+
+    backlight:backlight {
+             	compatible = "pwm-backlight";
+             	pwms = <&pwm1 0 25000>;
+             	rockchip,pwm_id= <1>;
+		brightness-levels = </*0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20*/ 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255>;
+
+
+
+//Hor Blanking = 280 Ver Blanking = 40
+//vbp+vfp+vs=40,hbp+hfp+hs=280
+             	default-brightness-level = <180>;
+             	enable-gpios = <&gpio6 GPIO_A6 GPIO_ACTIVE_HIGH>;
+     };
+
+		disp_timings: display-timings {
+                native-mode = <&timing0>;
+                timing0: timing0 {
+
+//13.3
+/*
+				screen-type = <SCREEN_EDP>;
+				out-face    = <OUT_P888>;
+                                clock-frequency = <148500000>;
+
+				hactive = <1920>;//2200
+				vactive = <1080>;//1125
+				hback-porch = <0>;
+				hfront-porch = <148>;
+				vback-porch = <10>;
+				vfront-porch = <24>;
+				hsync-len = <32>;
+				vsync-len = <6>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				de-active = <0>;
+				pixelclk-active = <0>;//1
+
+				swap-rb = <0>;
+				swap-rg = <0>;
+				swap-gb = <0>;
+*/
+
+screen-type = <SCREEN_EDP>;
+			out-face    = <OUT_P888>;//配置颜色
+             clock-frequency = <147800000>;//屏时钟单位HZ。fps=clock-frequency/(h_active +hfp+hbp+h_sync) *(v_active +vfp+vbp+v_sync) 
+			//行场信号设置
+			hactive = <1920>;
+			vactive = <1080>;
+			//(行/帧可视）前肩 后肩
+			hback-porch = <100>;//表示从水平同步信号开始到一行的有效数据开始之间的VCLK的个数
+			                                   // (Horizontal back porch)  == (Left_margin, 行切换，从同步到绘图之间的延迟)
+			hfront-porch = <180>;//表示一行的有效数据结束到下一个水平同步信号开始之间的VCLK的个数
+												//(Horizontal front porch) == (right_margin，行切换，从绘图到同步之间的延迟)
+			vback-porch = <10>;//表示在一帧图像开始时，垂直同步信号以后的无效行数  
+												//(vertical back porch)  == (upper_margin, 帧切换，从同步到绘图之间的延迟)
+			vfront-porch = <30>;//表示在一帧图像结束后，垂直同步信号以前的无效行数 
+											//(vertical front porch) == (lower_margin，帧切换，从绘图到同步之间的延迟)
+
+			hsync-len = <32>;//表示水平同步信号的宽度， 用VCLK计算    == HSPW( horizontal sync pulse width)
+			vsync-len = <6>; //表示垂直同步脉冲的宽度， 用行数计算  ==  VSPW( vertical sync pulse width)
+
+			hsync-active = <0>;
+			vsync-active = <0>;
+			de-active = <0>;
+			pixelclk-active = <0>;//1
+
+			swap-rb = <0>;
+			swap-rg = <0>;
+			swap-gb = <0>;
+                     	};
+               };
+};
